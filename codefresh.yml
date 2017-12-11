@@ -16,7 +16,7 @@ steps:
     type: push
     title: Push Docker image
     description: '${{CF_COMMIT_MESSAGE}}'
-    candidate: "BuildingDockerImage"
+    candidate: "${{BuildingDockerImage}}"
     tag: "${{CF_BRANCH_TAG_NORMALIZED}}"
     image_name: ${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}
     registry: dockerhub
