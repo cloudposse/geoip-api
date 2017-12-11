@@ -1,0 +1,56 @@
+# version: ‘1.0’
+#
+# steps:
+#
+#  BuildingDockerImage:
+#     title: Building Docker Image
+#     type: build
+#     image_name: EXAMPLEUSER/EXAMPLEREPO
+#     working_directory: ./
+#     dockerfile: Dockerfile
+#     tag: ‘${{CF_BRANCH_TAG_NORMALIZED}}’
+#     metadata:
+#       set:
+#         - commit_url: ‘${{CF_COMMIT_URL}}’
+#         - note: ‘example note’
+#
+#   perform_tests:
+#     image: ${{build-image}}
+#     working_directory: IMAGE_WORK_DIR
+#     description: Performing unit tests...
+#     commands:
+#       - EXAMPLETESTCOMMAND
+#     environments:
+#       - CF_VOLUME_PATH=${{CF_VOLUME_PATH}}
+#     on_success:
+#       metadata:
+#         set:
+#           - ‘${{build-image.imageId}}‘:
+#               - CF_QUALITY: true
+#     on_fail:
+#       metadata:
+#         set:
+#           - ‘${{build-image.imageId}}‘:
+#               - CF_QUALITY: false
+#
+#   PushingToDockerRegistry:
+#     title: Pushing to Docker Registry
+#     type: push
+#     candidate: ‘${{BuildingDockerImage}}’
+#     tag: ‘${{CF_BRANCH_TAG_NORMALIZED}}’
+#     registry: cfcr
+#
+#  RunningDeployScript:
+#     title: Running Deploy Script
+#     type: deploy
+#     kind: kubernetes
+#     cluster: example-cluster@example-project
+#     namespace: default
+#     service: EXAMPLESERVICENAME
+#     when:
+#       branch:
+#         only:
+#           - master
+#     candidate:
+#       image: ‘${{BuildingDockerImage}}’
+#       registry: cfcr
