@@ -32,3 +32,4 @@ steps:
       - CHART_VERSION=0.1.0
       - CHART_REPO_URL=https://charts.cloudposse.com/incubator
       - WAIT=true
+      - TIMEOUT=1200
